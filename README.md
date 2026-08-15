@@ -80,6 +80,22 @@ dsh web
 成本层   零常驻 + 同对话框零总结 + 归档零成本
 ```
 
+## 🙏 欢迎指正与改进
+
+本项目是个人在 DeepSeek Harness 插件生态中的学习实践，机制设计参考了：
+- Claude Code 的 CLAUDE.md + Auto Memory 双轨制
+- OpenAI Codex 的 AGENTS.md + Memories（空闲总结、过期剪枝、密钥擦除）
+- Kimi 的 Context Caching 成本优化思路
+- 社区插件 dsh-mneme（autoDream 巩固）、dsh-memory-gate（置信度门控）
+
+**欢迎大神们指正、批评、提出改进意见！** 任何问题（Issue）、建议、PR 都非常欢迎：
+- 注意力阈值标定是否合理？（当前 0.58）
+- 会话摘要的重复任务检测是否够准？
+- 置信度反馈机制有没有更好的设计？
+- token 成本还能怎么省？
+
+请到 [Issues](../../issues) 开贴，或直接提 PR。
+
 ## 📄 License
 
 MIT
