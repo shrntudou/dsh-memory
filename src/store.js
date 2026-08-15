@@ -544,14 +544,24 @@ export function createMemoryStore(ctx, cfg) {
     return removed;
   }
 
-  /** 归档目录中所有文件（供检索回退）。 */
+  /** 归档目录中所有文件（供检索回退）。返回 { rel, abs }，rel 用于展示、abs 用于读取。 */
   function listArchiveFiles() {
     const archiveDir = archiveRoot;
     if (!existsSync(archiveDir)) return [];
     return readdirSync(archiveDir)
-      .filter((name) => name.endsWith(".md"))
-      .map((name) => join("archive", name))
-      .sort();
+      .filter((name) => name.endsWith(".md") && name !== "README.md")
+      .map((name) => ({ rel: join("archive", name), abs: join(archiveDir, name) }))
+      .sort((a, b) => a.rel.localeCompare(b.rel));
+  }
+
+  /** 读取归档文件（归档可能在 NAS，独立于 root 路径，不经 readFileSafe 的越界检查）。 */
+  function readArchiveFile(absPath) {
+    try {
+      if (!existsSync(absPath)) return "";
+      return readFileSync(absPath, "utf8");
+    } catch {
+      return "";
+    }
   }
 
   /** 关键词检索归档记忆（活跃索引搜不到时回退到这里，两年前的事也能想起）。 */
@@ -563,7 +573,7 @@ export function createMemoryStore(ctx, cfg) {
     if (tokens.length === 0) return [];
     const hits = [];
     for (const file of listArchiveFiles()) {
-      const content = readFileSafe(file);
+      const content = readArchiveFile(file.abs);
       const lines = content.split("\n");
       let section = "";
       for (let i = 0; i < lines.length; i++) {
@@ -572,7 +582,7 @@ export function createMemoryStore(ctx, cfg) {
         const lower = line.toLowerCase();
         const matched = tokens.filter((t) => lower.includes(t)).length;
         if (matched > 0) {
-          hits.push({ file, section, line: line.trim().slice(0, 200), lineNumber: i + 1, matched, archived: true });
+          hits.push({ file: file.rel, section, line: line.trim().slice(0, 200), lineNumber: i + 1, matched, archived: true });
         }
       }
     }
