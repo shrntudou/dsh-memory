@@ -12,6 +12,8 @@
       config:
         # 记忆仓库目录（默认 ~/.dsh/memory）
         memoryDir: ~/.dsh/memory
+        # 剪枝归档目录（NAS 永久保存，不占 Mac 空间；默认 <memory>/archive）
+        archiveDir: /Volumes/personal_folder/dsh-memory-archive
         # git 远程（NAS 备份，可留空）
         gitRemote: /Volumes/personal_folder/git/dsh-memory.git
         # —— 读取（注意力机制）——

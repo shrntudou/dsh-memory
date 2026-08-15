@@ -26,6 +26,7 @@ export const inject = ["tools", "llm"];
 
 export const Config = z.object({
   memoryDir: z.string(),
+  archiveDir: z.string(),
   gitRemote: z.string(),
   digestMaxBytes: z.number().default(6000),
   attentionThreshold: z.number().default(0.58),
@@ -48,6 +49,7 @@ export const Config = z.object({
 
 const DEFAULTS = {
   digestMaxBytes: 6000,  autoExtract: true,
+  archiveDir: undefined,
   attentionThreshold: 0.58,
   maxAttentionBlocks: 3,
   maxAttentionBytes: 2400,

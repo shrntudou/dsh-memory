@@ -64,7 +64,7 @@ dsh web
 ├── facts.md             # 环境事实
 ├── projects/*.md        # 项目记忆
 ├── summaries.jsonl      # 会话摘要库（重复任务检测）
-├── archive/             # 剪枝归档（可检索回来）
+└── archive/             # 剪枝归档（默认本地；可配置到 NAS 永久保存）
 ├── .meta.json           # 条目索引（含置信度/使用统计）
 └── .vectors.sqlite      # 语义向量库（bge-m3）
 ```

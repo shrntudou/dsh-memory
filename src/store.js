@@ -107,6 +107,9 @@ function sanitizeSlug(name) {
 
 export function createMemoryStore(ctx, cfg) {
   const root = resolve(cfg.memoryDir ?? join(os.homedir(), ".dsh", "memory"));
+  /** 归档目录：默认本地 <memory>/archive/；可配置指向 NAS（如 /Volumes/personal_folder/dsh-memory-archive）
+   *  实现"剪枝的记忆永久保存到 NAS，不占 Mac 空间"。 */
+  const archiveRoot = cfg.archiveDir ? resolve(String(cfg.archiveDir)) : join(root, "archive");
   const metaFile = join(root, ".meta.json");
   const indexFile = join(root, "MEMORY.md");
   let meta = { entries: {} };
@@ -476,7 +479,7 @@ export function createMemoryStore(ctx, cfg) {
     const entry = meta.entries[hash];
     if (!entry) return false;
     try {
-      const archiveDir = join(root, "archive");
+      const archiveDir = archiveRoot;
       if (!existsSync(archiveDir)) mkdirSync(archiveDir, { recursive: true });
       const archiveFile = join(archiveDir, basename(entry.file));
       const section = extractSection(entry.file, entry.title);
@@ -543,7 +546,7 @@ export function createMemoryStore(ctx, cfg) {
 
   /** 归档目录中所有文件（供检索回退）。 */
   function listArchiveFiles() {
-    const archiveDir = join(root, "archive");
+    const archiveDir = archiveRoot;
     if (!existsSync(archiveDir)) return [];
     return readdirSync(archiveDir)
       .filter((name) => name.endsWith(".md"))
