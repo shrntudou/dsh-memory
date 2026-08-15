@@ -1,0 +1,37 @@
+# dsh-memory 插件注册（cordis.patch.yml）
+#
+# 安装方式一（推荐，插件包形式）：
+#   dsh plugin --profile web add dsh-memory
+#
+# 安装方式二（本地目录形式）：
+#   把本插件包放到 <profile>/plugins/dsh-memory/ 下，
+#   然后在本文件（<profile>/cordis.patch.yml）中注册：
+- insert:
+    - id: dsh-memory
+      name: ./plugins/dsh-memory/src/index.js
+      config:
+        # 记忆仓库目录（默认 ~/.dsh/memory）
+        memoryDir: ~/.dsh/memory
+        # git 远程（NAS 备份，可留空）
+        gitRemote: /Volumes/personal_folder/git/dsh-memory.git
+        # —— 读取（注意力机制）——
+        digestMaxBytes: 6000        # digest 总预算
+        attentionThreshold: 0.58    # 语义检索阈值：低于不注入
+        maxAttentionBlocks: 3       # 单次最多注入块数
+        maxAttentionBytes: 2400     # 单次注入体积上限
+        lowConfidenceThreshold: 0.25 # 置信度低于此值隔离
+        semanticSearch: true        # 语义检索（Ollama）
+        embedModel: bge-m3
+        ollamaUrl: http://127.0.0.1:11434
+        # —— 写入（提炼与摘要）——
+        autoExtract: true
+        extractMinTurns: 10         # 会话最小轮数（过短不提炼）
+        extractIntervalMs: 1800000  # 同一会话提炼间隔（30 分钟）
+        extractIdleMs: 120000       # 会话结束后延迟摘要（2 分钟）
+        # —— 巩固与剪枝 ——
+        consolidate: true
+        consolidateIntervalMs: 21600000  # 巩固间隔（6 小时）
+        pruneStaleDays: 30               # 30 天未用 → 归档（不删除）
+        # —— git 同步 ——
+        gitCommit: true
+        gitPush: true

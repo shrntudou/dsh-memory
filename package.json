@@ -1,0 +1,43 @@
+{
+  "name": "dsh-memory",
+  "version": "1.0.0",
+  "description": "DeepSeek Harness 跨会话记忆插件：注意力式按需读取、压缩写入、会话摘要、重复任务检测、记忆巩固、置信度反馈、归档备份。数据本地化（Markdown + git 同步）。",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "test": "node --test tests/",
+    "check": "node --check src/index.js && node --check src/store.js && node --check src/vectors.js && node --check src/extract.js && node --check src/tools.js"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "memory",
+    "cross-session-memory",
+    "plugin",
+    "注意力记忆",
+    "跨会话记忆"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-tools": "*",
+    "@deepseek-ai/schemastery": "*"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dsh": {
+    "profile": "web",
+    "pluginId": "dsh-memory",
+    "entry": "src/index.js"
+  }
+}
